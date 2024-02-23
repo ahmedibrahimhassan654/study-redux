@@ -1,14 +1,14 @@
 import { legacy_createStore as createStore } from "redux";
 import { configureStore, createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+const initialCounterState = {
   counter: 0,
   showCounter: true,
 };
 
 const counterSlice = createSlice({
   name: "counterslice",
-  initialState,
+  initialState: initialCounterState,
   reducers: {
     increment(state) {
       state.counter++;
@@ -25,6 +25,22 @@ const counterSlice = createSlice({
   },
 });
 
+const initialAutState = {
+  isAuth: false,
+};
+
+const AuthSlice = createSlice({
+  name: "auth",
+  initialState: initialAutState,
+  reducers: {
+    login(state) {
+      state.isAuth = true;
+    },
+    logout(state) {
+      state.isAuth = false;
+    },
+  },
+});
 // const counterReducer = (state = initialState, action = {}) => {
 //   if (action.type === "increment") {
 //     return {
@@ -57,11 +73,13 @@ const counterSlice = createSlice({
 
 // const store = createStore(counterSlice.reducer);
 const store = configureStore({
-  // reducer: { counter: counterSlice.reducer },
-  reducer: counterSlice.reducer,
+  //  reducer: counterSlice.reducer,
+  reducer: { counter: counterSlice.reducer, auth: AuthSlice.reducer },
 });
 
 //counter actions
 
 export const counterActions = counterSlice.actions;
+export const authActions = AuthSlice.actions;
+
 export default store;
